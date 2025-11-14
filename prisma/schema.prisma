@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ATTENDANT
+  DOCTOR 
+}
+
+enum ExamStatus {
+  PENDING    // Exame cadastrado, aguardando processamento.
+  PROCESSING // Exame sendo processado pelo sistema assíncrono.
+  DONE       // Processamento concluído com sucesso, pronto para laudo.
+  ERROR      // Processamento falhou.
+  REPORTED   // Laudo emitido, ciclo finalizado.
+}
+
+model User {
+  id    String   @id @default(uuid())
+  email String   @unique
+  name  String
+  password String 
+  role  UserRole @default(ATTENDANT) 
+    
+  @@map("users")
+}
+
+model MedicalExam {
+  id                String     @id @default(uuid())
+  title             String     
+  imagePath         String 
+  status            ExamStatus @default(PENDING) 
+  processingResult  String? 
+  report            String?
+  createdAt         DateTime   @default(now())
+  
+  @@map("medical_exams")
+}
