@@ -1,10 +1,4 @@
-# Título do Seu Projeto
-
-> Uma breve descrição de uma linha sobre o que este projeto faz.
-
-Este guia irá ajudá-lo a configurar e executar o projeto em seu ambiente de desenvolvimento local. A aplicação NestJS rodará localmente, e o RabbitMQ rodará via Docker.
-
----
+# HealthFlow
 
 ## Pré-requisitos
 
