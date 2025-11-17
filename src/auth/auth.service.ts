@@ -5,6 +5,7 @@ import { HashingServiceProtocol } from './hash/hashing.service';
 import jwtConfig from './config/jwt.config';
 import * as config from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import type { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +19,10 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) {}
 
-    async authenticate(loginDto: LoginDto){
+    async authenticate(
+        loginDto: LoginDto,
+        res: Response
+    ){
         const user = await this.prisma.user.findUnique({
             where: { email: loginDto.email },
         });
@@ -38,7 +42,7 @@ export class AuthService {
 
         const token = await this.jwtService.signAsync(
             {  
-                sub: user.id,
+                id: user.id,
                 email: user.email,
                 role: user.role 
             },
@@ -47,7 +51,10 @@ export class AuthService {
                 expiresIn: '1d',
             }
         );
-
-        return { message: 'Login realizado com sucesso!', token: token };
+        
+        return { 
+            token: token,
+            user: { id: user.id, name: user.name, email: user.email, role: user.role }
+        };
     }
 }

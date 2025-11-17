@@ -6,7 +6,7 @@ import * as config from '@nestjs/config';
 
 
 @Injectable()
-export class AuthTokenGuard implements CanActivate {
+export class JwtAuthGuard implements CanActivate {
 
     constructor(
         private readonly jwtService: JwtService,
@@ -28,7 +28,8 @@ export class AuthTokenGuard implements CanActivate {
                 secret: this.jwtConfiguration.secret,
             });
 
-            console.log(payload);
+            request['user'] = payload;
+
         }catch{
             throw new UnauthorizedException('Token de autenticação inválido ou expirado.');
         }

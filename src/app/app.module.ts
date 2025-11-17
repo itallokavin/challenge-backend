@@ -1,17 +1,25 @@
-import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from 'src/users/users.module';
-import { LoggerMiddleware } from 'src/common/middlewares/logger.middleware';
 import { AuthModule } from 'src/auth/auth.module';
+import { ExamsModule } from 'src/exams/exams.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'node:path';
 
 @Module({
-  imports: [UsersModule, AuthModule],
+  imports: [
+    UsersModule, 
+    AuthModule, 
+    ExamsModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'files'),
+      serveRoot: '/files',
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*');
-  }
+  configure() {}
 }
