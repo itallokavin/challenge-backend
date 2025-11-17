@@ -12,7 +12,7 @@ async function bootstrap() {
   }));
   app.useGlobalInterceptors(new LoggerInterceptor);
   app.enableCors({
-    origin: '*',
+    origin: 'https://challenge-frontend-kohl.vercel.app',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   })
