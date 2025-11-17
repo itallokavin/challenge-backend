@@ -6,6 +6,7 @@ import { AuthModule } from 'src/auth/auth.module';
 import { ExamsModule } from 'src/exams/exams.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'node:path';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -15,6 +16,9 @@ import { join } from 'node:path';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', 'files'),
       serveRoot: '/files',
+    }),
+    ConfigModule.forRoot({
+      isGlobal: true,
     }),
   ],
   controllers: [AppController],
